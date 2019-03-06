@@ -16,14 +16,14 @@ class Homestead
     end
 
     # Configure The Box
-    config.vm.define settings['name'] ||= 'homestead-7'
-    config.vm.box = settings['box'] ||= 'laravel/homestead'
-    config.vm.box_version = settings['version'] ||= '>= 6.3.0'
+    config.vm.define settings['name'] ||= 'homestead-56'
+    config.vm.box = settings['box'] ||= 'Svpernova09/homestead-fifty-six'
+    # config.vm.box_version = settings['version'] ||= '>= 1.0.0'
     config.vm.hostname = settings['hostname'] ||= 'homestead'
 
     # Configure A Private Network IP
     if settings['ip'] != 'autonetwork'
-      config.vm.network :private_network, ip: settings['ip'] ||= '192.168.10.10'
+      config.vm.network :private_network, ip: settings['ip'] ||= '192.168.5.6'
     else
       config.vm.network :private_network, ip: '0.0.0.0', auto_network: true
     end
@@ -258,22 +258,6 @@ class Homestead
           end
           s.path = script_dir + "/serve-#{type}.sh"
           s.args = [site['map'], site['to'], site['port'] ||= http_port, site['ssl'] ||= https_port, site['php'] ||= '7.2', params ||= '', site['zray'] ||= 'false', site['exec'] ||= 'false', headers ||= '']
-
-          if site['zray'] == 'true'
-            config.vm.provision 'shell' do |s|
-              s.inline = 'ln -sf /opt/zray/gui/public ' + site['to'] + '/ZendServer'
-            end
-            config.vm.provision 'shell' do |s|
-              s.inline = 'ln -sf /opt/zray/lib/zray.so /usr/lib/php/20170718/zray.so'
-            end
-            config.vm.provision 'shell' do |s|
-              s.inline = 'ln -sf /opt/zray/zray.ini /etc/php/7.2/fpm/conf.d/zray.ini'
-            end
-          else
-            config.vm.provision 'shell' do |s|
-              s.inline = 'rm -rf ' + site['to'].to_s + '/ZendServer'
-            end
-          end
         end
 
         # Configure The Cron Schedule
@@ -487,19 +471,6 @@ class Homestead
       s.name = 'Update Composer'
       s.inline = 'sudo /usr/local/bin/composer self-update --no-progress && sudo chown -R vagrant:vagrant /home/vagrant/.composer/'
       s.privileged = false
-    end
-
-    # Configure Blackfire.io
-    if settings.has_key?('blackfire')
-      config.vm.provision 'shell' do |s|
-        s.path = script_dir + '/blackfire.sh'
-        s.args = [
-          settings['blackfire'][0]['id'],
-          settings['blackfire'][0]['token'],
-          settings['blackfire'][0]['client-id'],
-          settings['blackfire'][0]['client-token']
-        ]
-      end
     end
 
     # Add config file for ngrok
