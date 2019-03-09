@@ -256,8 +256,19 @@ class Homestead
             end
             headers += ' )'
           end
+
+          if site.include? 'rewrites'
+              rewrites = '('
+              site['rewrites'].each do |rewrite|
+                  rewrites += ' [' + rewrite['map'] + ']=' + "'" + rewrite['to'] + "'"
+              end
+              rewrites += ' )'
+              # Escape variables for bash
+              rewrites.gsub! '$', '\$'
+          end
+
           s.path = script_dir + "/serve-#{type}.sh"
-          s.args = [site['map'], site['to'], site['port'] ||= http_port, site['ssl'] ||= https_port, site['php'] ||= '7.2', params ||= '', site['zray'] ||= 'false', site['exec'] ||= 'false', headers ||= '']
+          s.args = [site['map'], site['to'], site['port'] ||= http_port, site['ssl'] ||= https_port, site['php'] ||= '7.3', params ||= '', site['zray'] ||= 'false', site['exec'] ||= 'false', headers ||= '']
         end
 
         # Configure The Cron Schedule
@@ -469,8 +480,21 @@ class Homestead
     # Update Composer On Every Provision
     config.vm.provision 'shell' do |s|
       s.name = 'Update Composer'
-      s.inline = 'sudo /usr/local/bin/composer self-update --no-progress && sudo chown -R vagrant:vagrant /home/vagrant/.composer/'
+      s.inline = 'sudo chown -R vagrant:vagrant /usr/local/bin && sudo -u vagrant /usr/local/bin/composer self-update --no-progress && sudo chown -R vagrant:vagrant /home/vagrant/.composer/'
       s.privileged = false
+    end
+
+    # Configure Blackfire.io
+    if settings.has_key?('blackfire')
+      config.vm.provision 'shell' do |s|
+        s.path = script_dir + '/blackfire.sh'
+        s.args = [
+          settings['blackfire'][0]['id'],
+          settings['blackfire'][0]['token'],
+          settings['blackfire'][0]['client-id'],
+          settings['blackfire'][0]['client-token']
+        ]
+      end
     end
 
     # Add config file for ngrok
@@ -496,10 +520,10 @@ class Homestead
     # Turn off CFQ scheduler idling https://github.com/laravel/homestead/issues/896
     if settings.has_key?('disable_cfq')
       config.vm.provision 'shell' do |s|
-        s.inline = 'sudo echo 0 >/sys/block/sda/queue/iosched/slice_idle'
+        s.inline = 'sudo sh -c "echo 0 >> /sys/block/sda/queue/iosched/slice_idle"'
       end
       config.vm.provision 'shell' do |s|
-        s.inline = 'sudo echo 0 >/sys/block/sda/queue/iosched/group_idle'
+        s.inline = 'sudo sh -c "echo 0 >> /sys/block/sda/queue/iosched/group_idle"'
       end
     end
   end
