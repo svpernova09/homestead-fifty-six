@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Homestead\Settings;
+namespace HomesteadFiftySix\Settings;
 
 class JsonSettings extends HomesteadSettings
 {

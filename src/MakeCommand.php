@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravel\Homestead;
+namespace HomesteadFiftySix;
 
-use Laravel\Homestead\Settings\JsonSettings;
-use Laravel\Homestead\Settings\YamlSettings;
-use Laravel\Homestead\Traits\GeneratesSlugs;
+use HomesteadFiftySix\Settings\JsonSettings;
+use HomesteadFiftySix\Settings\YamlSettings;
+use HomesteadFiftySix\Traits\GeneratesSlugs;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;

@@ -2,11 +2,11 @@
 
 namespace Tests;
 
+use HomesteadFiftySix\MakeCommand;
+use HomesteadFiftySix\Traits\GeneratesSlugs;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
-use Laravel\Homestead\MakeCommand;
 use Tests\Traits\GeneratesTestDirectory;
-use Laravel\Homestead\Traits\GeneratesSlugs;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class MakeCommandTest extends TestCase
