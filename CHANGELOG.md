@@ -1,5 +1,5 @@
 # Release Notes
 
-Please visit https://github.com/laravel/homestead/releases for details about each release.
+Please visit https://github.com/svpernova09/homestead-fifty-six/releases for details about each release.
 
-Official documentation [is located here](https://laravel.com/docs/homestead).
+Official documentation [is located here](DOCS.md).

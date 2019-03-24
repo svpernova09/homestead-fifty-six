@@ -2,9 +2,9 @@
 
 namespace Tests\Settings;
 
+use HomesteadFiftySix\Settings\JsonSettings;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\GeneratesTestDirectory;
-use Laravel\Homestead\Settings\JsonSettings;
 
 class JsonSettingsTest extends TestCase
 {

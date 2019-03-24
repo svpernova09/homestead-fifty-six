@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Homestead\Settings;
+namespace HomesteadFiftySix\Settings;
 
 use Symfony\Component\Yaml\Yaml;
 
