@@ -4,15 +4,6 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get install -y php"$5"-bz2
 
-if [ "$7" = "true" ] && [ "$5" = "7.2" ]
-then configureZray="
-location /ZendServer {
-        try_files \$uri \$uri/ /ZendServer/index.php?\$args;
-}
-"
-else configureZray=""
-fi
-
 block="# mime types are covered in nginx.conf by:
 # http {
 #   include       mime.types;

@@ -10,15 +10,6 @@ if [ -n "$6" ]; then
    done
 fi
 
-if [ "$7" = "true" ] && [ "$5" = "7.2" ]
-then configureZray="
-location /ZendServer {
-        try_files \$uri \$uri/ /ZendServer/index.php?\$args;
-}
-"
-else configureZray=""
-fi
-
 block="server {
     listen ${3:-80};
     listen ${4:-443} ssl http2;
@@ -36,7 +27,6 @@ block="server {
     location ~ ^/assets/.*\.php\$ {
         deny all;
     }
-    $configureZray
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location = /robots.txt  { access_log off; log_not_found off; }
